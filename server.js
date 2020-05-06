@@ -20,9 +20,22 @@ app.get("/api/notes", function(req, res) {
     res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
-app.get("/api/notes/:id", function(req, res) {
+app.get("/api/notes/:title", function(req, res) {
     let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    res.json(savedNotes[Number(req.params.id)]);
+    var chosen = req.params.title;
+    console.log(chosen);
+
+    for (var i = 0; i < savedNotes.length; i++) {
+        if (chosen === savedNotes[i].title) {
+          return res.json(savedNotes[i]);
+        }
+      }
+
+    return res.json(false);  
+
+
+    
+    //res.json(savedNotes[Number(req.params.id)]);
 });
 
 app.get("*", function(req, res) {
